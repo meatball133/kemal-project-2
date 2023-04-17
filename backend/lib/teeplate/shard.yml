@@ -1,0 +1,14 @@
+name: teeplate
+version: 0.8.5
+
+authors:
+  - mosop
+
+crystal: ">= 0.36.1, < 2.0.0"
+
+development_dependencies:
+  stdio:
+    github: mosop/stdio
+    version: ~> 0.1.2
+
+license: MIT

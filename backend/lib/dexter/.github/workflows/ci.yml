@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: "*"
+
+jobs:
+  check_format:
+    strategy:
+      fail-fast: false
+      matrix:
+        crystal_version:
+          - 1.3.2
+        experimental:
+          - false
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    container: crystallang/crystal:${{ matrix.crystal_version }}-alpine
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install shards
+        run: shards install
+      - name: Format
+        run: crystal tool format --check
+      - name: Lint
+        run: ./bin/ameba
+  specs:
+    strategy:
+      fail-fast: false
+      matrix:
+        crystal_version:
+          - 1.0.0
+          - 1.3.2
+        experimental:
+          - false
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    container: crystallang/crystal:${{ matrix.crystal_version }}-alpine
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install shards
+        run: shards install
+      - name: Cache Crystal
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/crystal
+          key: ${{ runner.os }}-crystal
+      - name: Create .env file
+        run: touch .env
+      - name: Run tests
+        run: crystal spec

@@ -1,0 +1,25 @@
+name: authentic
+version: 1.0.0
+
+authors:
+  - Paul Smith <paulcsmith0218@gmail.com>
+
+crystal: ">= 1.6.0"
+
+license: MIT
+
+dependencies:
+  lucky:
+    github: luckyframework/lucky
+    version: ">= 1.0.0"
+  avram:
+    github: luckyframework/avram
+    version: ">= 1.0.0"
+  habitat:
+    github: luckyframework/habitat
+    version: ~> 0.4.7
+
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+    version: ~> 1.1.0
