@@ -1,11 +1,7 @@
-import { Prism } from '@mantine/prism';
-import { textState } from '../App';
-import { useRecoilState } from 'recoil';
 import {
   Text,
   Box,
   Container,
-  Badge,
   TextInput,
   PasswordInput,
   Space,
@@ -16,16 +12,8 @@ import {
 } from '@mantine/core';
 import { useState } from 'react';
 import { SignUpApi } from './api';
-import {
-  useForm,
-  isNotEmpty,
-  isEmail,
-  isInRange,
-  hasLength,
-  matches,
-  matchesField,
-} from '@mantine/form';
-import { IconCheck, IconX } from '@tabler/icons-react';
+import { useForm, isEmail, hasLength, matchesField } from '@mantine/form';
+import { IconX } from '@tabler/icons-react';
 
 export function SignUP() {
   const [failed, setFail] = useState([false, '']);

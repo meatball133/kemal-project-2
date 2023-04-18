@@ -2,43 +2,27 @@ import { RichTextEditor, Link } from '@mantine/tiptap';
 import { useEditor } from '@tiptap/react';
 import { Notification } from '@mantine/core';
 import { IconCheck, IconX } from '@tabler/icons-react';
-import {
-  Text,
-  Box,
-  Container,
-  Badge,
-  Flex,
-  Card,
-  Group,
-  Center,
-  Button,
-  useMantineColorScheme,
-  Space,
-} from '@mantine/core';
+import { Container, Flex, Center, Button, Space } from '@mantine/core';
 import Highlight from '@tiptap/extension-highlight';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
-import React, { useEffect, useState } from 'react';
-import { useForm } from '@mantine/form';
+import { useEffect, useState } from 'react';
 import { CodeShowCase } from './code_show_case';
 import { useParams } from 'react-router-dom';
 import { GetSolution, UpdateApi } from './api';
-import { textState } from '../App';
+import { representerFiles } from '../App';
 import { useRecoilState } from 'recoil';
-
-interface FormValues {
-  content: string;
-}
 
 export function Editor() {
   const { id } = useParams();
-  const [text, setTodoList] = useRecoilState(textState);
+  const [_, setTodoList] = useRecoilState(representerFiles);
   const [failed, setFail] = useState(false);
   const [content, onchange] = useState('<p><p>');
   const [succsesfull, setSuccsesfull] = useState(false);
+  var firstRun = false
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -56,10 +40,13 @@ export function Editor() {
     },
   });
   useEffect(() => {
-    GetSolution(setTodoList, id, onchange);
-    editor?.commands.setContent(content);
-  }, [content]);
-  console.log(text);
+    if (!editor) return
+    const html = editor.getHTML()
+    console.log(content)
+    if (content !== html){
+      GetSolution(setTodoList, id, onchange);
+    editor?.commands.setContent(content);}
+  }, [content, editor]);
   return (
     <>
       <CodeShowCase />

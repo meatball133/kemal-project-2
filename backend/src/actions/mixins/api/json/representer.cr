@@ -10,8 +10,13 @@ class TestVisitor < Crystal::Transformer
     @@counter += data.size
   end
 
-  def self.data : Array(String)
+  def self.data() : Array(String)
     @@data
+  end
+
+  def self.reset()
+    @@data = [] of String
+    @@counter = 0
   end
 
   def transform(node : Crystal::Def)
@@ -298,7 +303,7 @@ class TestVisitor < Crystal::Transformer
   end
 
   def transform(node : Crystal::MacroExpression)
-    p node.exp.transform self
+    # p node.exp.transform self
     node
   end
 
@@ -510,8 +515,6 @@ class TestVisitor_2 < Crystal::Visitor
   end
 
   def visit(node : Crystal::Def)
-    # p node.name
-    # p node.visibility
     unless @counter.includes?(node.to_s)
       @counter << node.name.to_s
     end
@@ -541,7 +544,6 @@ class Reformat < Crystal::Transformer
 
   def initialize(data)
     @data = data.map { |x| x.sort { |a, b| a[0] <=> b[0] } }
-    # @data = Array(Array(Tuple(String, Crystal::ASTNode, Crystal::Arg | Nil, Array(Crystal::Arg), Crystal::ASTNode | Nil, Crystal::Visibility, Crystal::ASTNode | Nil))).new
     @counter = 0
     @counter_2 = 0
   end
@@ -617,10 +619,13 @@ module Api::JSON::Representer
       solution += "\n"
       parser = Crystal::Parser.new(solution)
       ast = parser.parse
-      abc = TestVisitor_2.new
-      abc.accept(ast)
-      ast = ast.transform(Reformat.new(abc.methods))
-      trans = ast.transform(TestVisitor.new(abc.counter))
+      first_run = TestVisitor_2.new
+      first_run.accept(ast)
+      ast = ast.transform(Reformat.new(first_run.methods))
+      second_run = TestVisitor_2.new
+      second_run.accept(ast)
+      trans = ast.transform(TestVisitor.new(second_run.counter))
+      TestVisitor.reset()
       trans = trans.to_s
     rescue
       trans = solution[0..-2]

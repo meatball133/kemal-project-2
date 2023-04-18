@@ -10,7 +10,6 @@ import {
   Space,
   Button,
   Center,
-  Divider,
   rem,
   Card,
   SimpleGrid
@@ -62,7 +61,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function Home() {
-    const { height, width } = useViewportSize();
+  const { width } = useViewportSize();
   const { classes, theme } = useStyles();
   return (
     <Container size="lg">
@@ -125,7 +124,7 @@ export function Home() {
       <Space h="xl" />
       <SimpleGrid cols={width <= 770 ? 1: 3}>
         <Container size="25rem">
-          <Card radius="lg" className={classes.card}>
+          <Card radius="lg" className={classes.card} shadow="lg">
             <IconBallpen
               color={theme.fn.primaryColor()}
               size={rem(50)}
@@ -141,7 +140,7 @@ export function Home() {
           </Card>
         </Container>
         <Container size="25rem">
-          <Card radius="lg" className={classes.card}>
+          <Card radius="lg" className={classes.card} shadow="lg">
             <IconGauge
               color={theme.fn.primaryColor()}
               size={rem(50)}
@@ -157,7 +156,7 @@ export function Home() {
           </Card>
         </Container>
         <Container size="25rem" >
-          <Card radius="lg" className={classes.card}>
+          <Card radius="lg" className={classes.card} shadow="lg">
             <IconFreeRights
               color={theme.fn.primaryColor()}
               size={rem(50)}

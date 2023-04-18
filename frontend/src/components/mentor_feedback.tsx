@@ -1,5 +1,4 @@
-import { Prism } from '@mantine/prism';
-import { textState } from '../App';
+import { representerFiles } from '../App';
 import { useRecoilState } from 'recoil';
 import {
   Text,
@@ -10,11 +9,11 @@ import {
 } from '@mantine/core';
 
 export function MentorFeedback() {
-  const [text, setTodoList] = useRecoilState(textState);
+  const [RepresenterFiles, _] = useRecoilState(representerFiles);
   return (
-    <Container size="xs" px="xs">
+    <Container size="sm" px="xs">
       <Badge
-        sx={(theme) => ({
+        sx={() => ({
           position: 'relative',
           top: 10,
           right: 10,
@@ -39,8 +38,10 @@ export function MentorFeedback() {
           {
             <TypographyStylesProvider>
               <div
-                dangerouslySetInnerHTML={{ __html: text['mentor_note'] }}
-                style={{ whiteSpace: 'pre' }}
+                dangerouslySetInnerHTML={{
+                  __html: RepresenterFiles['mentor_note'],
+                }}
+                style={{ whiteSpace: 'normal',  wordBreak: "break-all"}}
               />
             </TypographyStylesProvider>
           }

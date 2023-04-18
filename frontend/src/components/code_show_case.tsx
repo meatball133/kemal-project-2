@@ -1,42 +1,41 @@
-import { Prism } from '@mantine/prism';
-import { textState } from '../App';
+import { representerFiles } from '../App';
 import { useRecoilState } from 'recoil';
-import { Text, Box, Container, Badge, ColorScheme } from '@mantine/core';
+import { Box, Container, Badge, ColorScheme, ScrollArea } from '@mantine/core';
 import hljs from 'highlight.js/lib/core';
 import crystal from 'highlight.js/lib/languages/crystal';
 import '../github.css';
 import '../github-dark-dimmed.css';
-import { useHotkeys, useLocalStorage } from '@mantine/hooks';
-hljs.registerLanguage('crystal', crystal);
+import { useLocalStorage } from '@mantine/hooks';
 
 export function CodeShowCase() {
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+  const [colorScheme] = useLocalStorage<ColorScheme>({
     key: 'mantine-color-scheme',
     defaultValue: 'light',
     getInitialValueInEffect: true,
   });
-  const [text, setTodoList] = useRecoilState(textState);
-  console.log('color', colorScheme);
+  const [text] = useRecoilState(representerFiles);
+  hljs.registerLanguage('crystal', crystal);
   hljs.configure({
     classPrefix: `${colorScheme === 'dark' ? 'dark ' : ''}hljs-`,
   });
   let value = hljs.highlight(text['solution'], { language: 'crystal' }).value;
-  console.log(value);
   return (
     <>
-      <Container size="xs" px="xs">
+      <Container size="sm" px="xs">
         <Badge
-          sx={(theme) => ({
+          sx={() => ({
             position: 'relative',
             top: 10,
             right: 10,
+            zIndex: 1
           })}
           size="lg"
           variant="gradient"
           gradient={{ from: 'orange', to: 'red' }}
         >
-          {`occurrence: ${text['occurrence']}`}{' '}
+          {`occurrence: ${text['occurrence']}`}
         </Badge>
+        <ScrollArea>
         <Box
           sx={(theme) => ({
             backgroundColor:
@@ -45,6 +44,7 @@ export function CodeShowCase() {
                 : theme.colors.gray[2],
             padding: theme.spacing.xl,
             borderRadius: theme.radius.md,
+            overflow: "hidden"
           })}
         >
           <div
@@ -52,6 +52,7 @@ export function CodeShowCase() {
             style={{ whiteSpace: 'pre' }}
           />
         </Box>
+        </ScrollArea>
       </Container>
     </>
   );
